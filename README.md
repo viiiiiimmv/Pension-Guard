@@ -1,209 +1,164 @@
-# Smart Pension Distribution System
+<div align="center">
 
-This project is a full-stack pension eligibility and fraud-detection system.
+<img src="https://img.shields.io/badge/Pension_Guard-v1.0-0f172a?style=for-the-badge&logo=shield&logoColor=white" alt="Pension Guard" height="40"/>
 
-It simulates a government-style pension review workflow where:
+# 🛡️ Pension Guard
 
-1. A synthetic pensioner dataset is generated.
-2. Machine learning models are trained to detect potentially fraudulent or ineligible cases.
-3. A FastAPI backend serves predictions, analytics, and pensioner records.
-4. A React dashboard allows an officer or reviewer to inspect records, run predictions, and view model performance.
+### Smart Pension Distribution & Fraud Detection System
 
-If your goal is to learn this project, the shortest explanation is:
+*A full-stack, ML-powered government-style pension review platform — from synthetic data generation to an interactive officer dashboard.*
 
-- `ml/` creates the data and the model
-- `backend/` serves the model and the data
-- `frontend/` gives you a UI to use the system
+<br/>
 
-For command-by-command startup help, also see [runner.md](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/runner.md).
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org)
+[![XGBoost](https://img.shields.io/badge/XGBoost-FF6600?style=for-the-badge&logo=xgboost&logoColor=white)](https://xgboost.readthedocs.io)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)](https://scikit-learn.org)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.com)
+[![pytest](https://img.shields.io/badge/pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white)](https://pytest.org)
 
-## What This Project Does
+<br/>
 
-The system tries to answer one question:
+![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
+![Status](https://img.shields.io/badge/status-active-brightgreen?style=flat-square)
+![ML Model](https://img.shields.io/badge/model-GBDT%2FXGBoost-orange?style=flat-square)
+![Dataset](https://img.shields.io/badge/dataset-50%2C000%20records-blue?style=flat-square)
 
-`Should this pension record be treated as eligible, or should it be flagged for possible fraud/ineligibility?`
+</div>
 
-It does that by using six features for each pensioner:
+---
 
-- age
-- life-proof delay
-- bank activity count
-- biometric status
-- historical approval rate
-- pension credit anomaly
+## 📖 What Is Pension Guard?
 
-The ML pipeline learns a fraud probability from these inputs.
+Pension Guard simulates a **government-grade pension review workflow**. It generates a synthetic pensioner dataset, trains machine learning models to detect fraudulent or ineligible cases, exposes a FastAPI backend for predictions and analytics, and presents everything through a React officer dashboard.
 
-The backend then:
+> **Core question the system answers:**
+> *Should this pension record be treated as eligible, or flagged for possible fraud/ineligibility?*
 
-- loads the trained model
-- exposes prediction endpoints
-- stores pensioner records in SQLite
-- returns dashboard analytics
-- serves the generated model report images
+---
 
-The frontend then lets a user:
+## 🗺️ Repository Map
 
-- see high-level system metrics
-- search and inspect pensioners
-- submit one-off prediction requests
-- review confusion matrix, ROC curve, and feature importance
-
-## Architecture
-
-```text
-smart-pension-system/
-├── ml/         -> dataset generation, training, evaluation, reports
-├── backend/    -> FastAPI app, SQLite, CRUD, analytics, inference
-├── frontend/   -> React + Tailwind dashboard
-├── runner.md   -> operational runbook
-└── README.md   -> learning and usage guide
+```
+pension-guard/
+├── ml/               ← dataset generation, model training, evaluation & reports
+│   ├── common.py
+│   ├── generate_dataset.py
+│   ├── train.py
+│   ├── evaluate.py
+│   ├── data/         ← pensioners.csv (generated)
+│   ├── models/       ← .joblib artifacts (generated)
+│   ├── reports/      ← charts & metrics (generated)
+│   └── tests/
+│
+├── backend/          ← FastAPI app, SQLite, CRUD, inference, analytics
+│   ├── main.py
+│   ├── database.py
+│   ├── seed.py
+│   ├── services/
+│   │   ├── inference.py
+│   │   └── analytics.py
+│   ├── tests/
+│   └── requirements.txt
+│
+├── frontend/         ← React + TypeScript + Tailwind dashboard
+│   ├── src/
+│   │   ├── App.tsx
+│   │   ├── api/client.ts
+│   │   └── pages/
+│   │       ├── Dashboard.tsx
+│   │       ├── Pensioners.tsx
+│   │       ├── Predict.tsx
+│   │       └── Analytics.tsx
+│   ├── .env
+│   └── package.json
+│
+├── docker-compose.yml
+├── runner.md         ← operational runbook
+└── README.md
 ```
 
-## End-to-End Workflow
+---
 
-This is the full pipeline from raw generation to UI usage:
+## 🧠 How It Works
 
-1. `ml/generate_dataset.py`
-   Creates `50,000` synthetic pensioner records in `ml/data/pensioners.csv`
-2. `ml/train.py`
-   Trains the rule-based baseline, logistic regression baseline, and the main GBDT/XGBoost model
-3. `ml/evaluate.py`
-   Produces performance metrics and charts in `ml/reports/`
-4. `backend/seed.py`
-   Loads the CSV into SQLite and stores prediction outputs for all records
-5. `backend/main.py`
-   Starts the API and serves data/model insights
-6. `frontend/`
-   Calls the API and displays the system in a browser
+### Six Features Per Pensioner
 
-## Main Outputs
+| Feature | Description |
+|---|---|
+| `age` | Pensioner's age |
+| `life_proof_delay` | Days delay in submitting life certificate |
+| `bank_activity_count` | Recent banking transactions count |
+| `biometric_status` | Biometric verification flag |
+| `historical_approval_rate` | Past approval ratio for this record |
+| `pension_credit_anomaly` | Anomaly score in credit disbursement |
 
-After the project is run successfully, these are the important generated files:
+### Three Models Compared
 
-### Dataset
+| Model | Role |
+|---|---|
+| Rule-based baseline | Heuristic threshold classifier |
+| Logistic Regression | Statistical baseline |
+| **GBDT / XGBoost** ✅ | **Primary model — best performance** |
 
-- `ml/data/pensioners.csv`
+### End-to-End Pipeline
 
-### Trained model artifacts
+```
+generate_dataset.py  →  train.py  →  evaluate.py
+        ↓                                ↓
+  pensioners.csv              reports/ (charts + metrics)
+        ↓
+     seed.py  →  pension.db
+        ↓
+     main.py  (FastAPI on :8000)
+        ↓
+  React Dashboard (Vite on :5173)
+```
 
-- `ml/models/gbdt_model.joblib`
-- `ml/models/lr_model.joblib`
-- `ml/models/scaler.joblib`
-- `ml/models/threshold.json`
+---
 
-### Evaluation reports
+## ⚙️ Prerequisites
 
-- `ml/reports/metrics.json`
-- `ml/reports/feature_importance.png`
-- `ml/reports/roc_curve.png`
-- `ml/reports/pr_curve.png`
+Make sure you have the following installed before starting:
 
-### Backend database
+| Tool | Version | Install |
+|---|---|---|
+| Python | ≥ 3.10 | [python.org](https://python.org) |
+| Node.js | ≥ 18.x | [nodejs.org](https://nodejs.org) |
+| npm | ≥ 9.x | Bundled with Node.js |
+| Docker *(optional)* | any | [docker.com](https://docker.com) |
 
-- `backend/pension.db`
+---
 
-## Project Modules
+## 🚀 Setup & Installation
 
-## ML Layer
-
-The ML layer is responsible for building the intelligence in the system.
-
-Important files:
-
-- [ml/common.py](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/ml/common.py)
-- [ml/generate_dataset.py](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/ml/generate_dataset.py)
-- [ml/train.py](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/ml/train.py)
-- [ml/evaluate.py](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/ml/evaluate.py)
-
-What it does:
-
-- generates a reproducible synthetic dataset
-- keeps the fraud ratio in the required band
-- trains three models
-- chooses a decision threshold for the GBDT model
-- measures accuracy, precision, recall, F1, ROC AUC, PR AUC, and latency
-- saves images and metrics for the dashboard
-
-The main model is the proposed GBDT/XGBoost classifier.
-
-## Backend Layer
-
-The backend is the service layer between the ML model and the frontend.
-
-Important files:
-
-- [backend/main.py](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/backend/main.py)
-- [backend/database.py](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/backend/database.py)
-- [backend/services/inference.py](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/backend/services/inference.py)
-- [backend/services/analytics.py](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/backend/services/analytics.py)
-- [backend/seed.py](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/backend/seed.py)
-
-What it does:
-
-- loads trained model artifacts at startup
-- exposes API routes for pensioners, prediction, and analytics
-- stores pension records in SQLite
-- returns summary metrics to the frontend
-- serves static report images from `ml/reports`
-
-Main route groups:
-
-- `/api/pensioners`
-- `/api/predict`
-- `/api/analytics`
-- `/api/health`
-
-OpenAPI docs:
-
-- [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-
-## Frontend Layer
-
-The frontend is an officer-style admin dashboard.
-
-Important files:
-
-- [frontend/src/App.tsx](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/frontend/src/App.tsx)
-- [frontend/src/api/client.ts](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/frontend/src/api/client.ts)
-- [frontend/src/pages/Dashboard.tsx](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/frontend/src/pages/Dashboard.tsx)
-- [frontend/src/pages/Pensioners.tsx](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/frontend/src/pages/Pensioners.tsx)
-- [frontend/src/pages/Predict.tsx](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/frontend/src/pages/Predict.tsx)
-- [frontend/src/pages/Analytics.tsx](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/frontend/src/pages/Analytics.tsx)
-
-What it does:
-
-- shows total eligible and flagged counts
-- displays charts and performance comparisons
-- lets you search pensioners
-- lets you inspect a record in detail
-- lets you submit a new single-record prediction
-- shows feature importance and confusion matrix results
-
-Main pages:
-
-- `/` dashboard overview
-- `/pensioners` pensioner table and record detail
-- `/predict` manual prediction form
-- `/analytics` model report view
-
-## Setup
-
-From the project root:
+### 1 — Clone the repository
 
 ```bash
-cd /Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system
+git clone https://github.com/viiiiiimmv/Pension-Guard.git
+cd Pension-Guard
 ```
 
-Create the virtual environment and install Python dependencies:
+### 2 — Create Python virtual environment
 
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate          # macOS / Linux
+# .venv\Scripts\activate           # Windows
+```
+
+### 3 — Install Python dependencies
+
+```bash
 pip install -r backend/requirements.txt -r ml/requirements.txt
 ```
 
-Install frontend dependencies:
+### 4 — Install frontend dependencies
 
 ```bash
 cd frontend
@@ -211,205 +166,231 @@ npm install
 cd ..
 ```
 
-## Environment Variables
+### 5 — Configure environment variables
 
-This project mostly works with sensible defaults.
-
-### Frontend `.env`
-
-If you want to configure the frontend API base URL, create:
-
-- [frontend/.env](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/frontend/.env)
-
-Example:
+**Frontend** — create `frontend/.env`:
 
 ```env
 VITE_API_URL=http://127.0.0.1:8000
 ```
 
-### Backend environment variables
-
-The backend currently reads environment variables from the shell when it starts.
-
-Supported variables:
-
-- `DATABASE_URL`
-- `FRONTEND_ORIGIN`
-- `ML_MODELS_PATH`
-- `ML_REPORTS_PATH`
-
-Example start:
+**Backend** — set these before starting the server (or export them in your shell profile):
 
 ```bash
-cd backend
-source ../.venv/bin/activate
 export DATABASE_URL="sqlite:///./pension.db"
 export FRONTEND_ORIGIN="http://127.0.0.1:5173"
 export ML_MODELS_PATH="../ml/models"
 export ML_REPORTS_PATH="../ml/reports/metrics.json"
-uvicorn main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-## How To Run the Project
+> 💡 All variables have sensible defaults — they only need to be set if you want to override paths or origins.
 
-## Step 1: Generate data and train the model
+---
+
+## ▶️ Running the Project
+
+Run these steps **in order** from the project root.
+
+### Step 1 — Generate data & train the model
 
 ```bash
 cd ml
 source ../.venv/bin/activate
-python generate_dataset.py
-python train.py
+
+python generate_dataset.py   # creates ml/data/pensioners.csv (50,000 records)
+python train.py              # trains GBDT, LR, and rule-based models
 MPLCONFIGDIR=/tmp/mpl-cache XDG_CACHE_HOME=/tmp/font-cache python evaluate.py
+# ↑ generates ml/reports/ charts and metrics.json
+
 cd ..
 ```
 
-## Step 2: Seed the database
+### Step 2 — Seed the database
 
 ```bash
 cd backend
 source ../.venv/bin/activate
-python seed.py
+python seed.py               # loads CSV into SQLite (pension.db)
 cd ..
 ```
 
-## Step 3: Start the backend
-
-Open a terminal and run:
+### Step 3 — Start the backend *(Terminal 1)*
 
 ```bash
-cd /Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/backend
+cd backend
 source ../.venv/bin/activate
+
+export DATABASE_URL="sqlite:///./pension.db"
+export FRONTEND_ORIGIN="http://127.0.0.1:5173"
+export ML_MODELS_PATH="../ml/models"
+export ML_REPORTS_PATH="../ml/reports/metrics.json"
+
 uvicorn main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-Useful backend URLs:
+Verify it's running:
 
-- [http://127.0.0.1:8000/api/health](http://127.0.0.1:8000/api/health)
-- [http://127.0.0.1:8000/api/analytics/summary](http://127.0.0.1:8000/api/analytics/summary)
-- [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+| URL | What you'll see |
+|---|---|
+| `http://127.0.0.1:8000/api/health` | `{"status":"ok"}` |
+| `http://127.0.0.1:8000/api/analytics/summary` | Summary metrics JSON |
+| `http://127.0.0.1:8000/docs` | Interactive Swagger UI |
 
-## Step 4: Start the frontend
-
-Open a second terminal and run:
+### Step 4 — Start the frontend *(Terminal 2)*
 
 ```bash
-cd /Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/frontend
+cd frontend
 npm run dev -- --host 127.0.0.1 --port 5173
 ```
 
-Frontend URL:
+Open **[http://127.0.0.1:5173](http://127.0.0.1:5173)** in your browser.
 
-- [http://127.0.0.1:5173](http://127.0.0.1:5173)
+---
 
-## How To Use the Project
+## ⚡ Quick-Start (One-liner)
 
-Once both backend and frontend are running:
-
-### Dashboard
-
-Go to the home page and review:
-
-- total pensioners
-- eligible count
-- flagged count
-- average fraud probability
-- model comparison chart
-- eligibility distribution
-- age and delay distributions
-
-### Pensioners page
-
-Use this page to:
-
-- search by pensioner ID
-- filter by eligible, flagged, or pending
-- sort by age, delay, or fraud probability
-- click a row to inspect full details
-
-### Predict page
-
-Use this page to:
-
-- enter one record manually
-- submit the features to the model
-- see the eligibility decision
-- see the fraud probability
-- view the confidence label
-- inspect the feature-level breakdown
-
-### Analytics page
-
-Use this page to:
-
-- inspect the confusion matrix
-- view the ROC curve image served by the backend
-- review feature importance
-- compare model performance metrics
-
-## API Summary
-
-Important endpoints:
-
-- `GET /api/health`
-- `GET /api/pensioners`
-- `GET /api/pensioners/{pensioner_id}`
-- `POST /api/pensioners`
-- `PUT /api/pensioners/{pensioner_id}`
-- `DELETE /api/pensioners/{pensioner_id}`
-- `POST /api/predict`
-- `POST /api/predict/batch`
-- `GET /api/analytics/summary`
-- `GET /api/analytics/metrics`
-- `GET /api/analytics/confusion`
-- `GET /api/analytics/features`
-- `GET /api/analytics/distribution`
-
-## How To Learn This Codebase
-
-If you want to understand the project step by step, use this order:
-
-1. Read [ml/common.py](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/ml/common.py)
-   This explains the data features, model setup, thresholding, and metric helpers.
-2. Read [ml/train.py](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/ml/train.py)
-   This shows the actual model training flow.
-3. Read [backend/services/inference.py](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/backend/services/inference.py)
-   This is the bridge between the saved model and the API.
-4. Read [backend/main.py](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/backend/main.py)
-   This shows how the backend app starts and loads services.
-5. Read [frontend/src/api/client.ts](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/frontend/src/api/client.ts)
-   This shows how the UI talks to the backend.
-6. Read [frontend/src/App.tsx](/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/frontend/src/App.tsx)
-   This shows the layout and routing.
-
-## Testing
-
-From the project root:
+If you've already done setup once and just want to relaunch:
 
 ```bash
+# From project root — ML pipeline
+source .venv/bin/activate
+cd ml && python generate_dataset.py && python train.py && \
+  MPLCONFIGDIR=/tmp/mpl-cache XDG_CACHE_HOME=/tmp/font-cache python evaluate.py && cd ..
+cd backend && python seed.py && cd ..
+```
+
+Then open two terminals as described in Steps 3 & 4 above.
+
+---
+
+## 🐳 Docker (Alternative)
+
+Run the entire stack with a single command:
+
+```bash
+docker-compose up --build
+```
+
+No manual virtualenv or npm steps needed.
+
+---
+
+## 🖥️ Using the Dashboard
+
+### 🏠 Dashboard (`/`)
+- Total pensioners, eligible count, flagged count
+- Average fraud probability
+- Model comparison chart
+- Age and delay distributions
+
+### 👥 Pensioners (`/pensioners`)
+- Search by pensioner ID
+- Filter by `eligible` / `flagged` / `pending`
+- Sort by age, delay, or fraud probability
+- Click any row to view full record details
+
+### 🔍 Predict (`/predict`)
+- Enter a single record's features manually
+- Submit to the GBDT model
+- See eligibility decision, fraud probability, and confidence label
+- Inspect per-feature breakdown
+
+### 📊 Analytics (`/analytics`)
+- Confusion matrix
+- ROC curve image
+- Feature importance chart
+- Side-by-side model performance comparison
+
+---
+
+## 🔌 API Reference
+
+Base URL: `http://127.0.0.1:8000`
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/health` | Health check |
+| `GET` | `/api/pensioners` | List all pensioners |
+| `GET` | `/api/pensioners/{id}` | Get single record |
+| `POST` | `/api/pensioners` | Create record |
+| `PUT` | `/api/pensioners/{id}` | Update record |
+| `DELETE` | `/api/pensioners/{id}` | Delete record |
+| `POST` | `/api/predict` | Single prediction |
+| `POST` | `/api/predict/batch` | Batch prediction |
+| `GET` | `/api/analytics/summary` | Dashboard metrics |
+| `GET` | `/api/analytics/metrics` | Model metrics |
+| `GET` | `/api/analytics/confusion` | Confusion matrix data |
+| `GET` | `/api/analytics/features` | Feature importances |
+| `GET` | `/api/analytics/distribution` | Score distributions |
+
+> Full interactive docs: **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)**
+
+---
+
+## 📦 Generated Artifacts
+
+After a full run, these files will exist:
+
+```
+ml/data/
+  └── pensioners.csv              ← 50,000 synthetic records
+
+ml/models/
+  ├── gbdt_model.joblib           ← primary XGBoost model
+  ├── lr_model.joblib             ← logistic regression baseline
+  ├── scaler.joblib               ← feature scaler
+  └── threshold.json              ← optimal decision threshold
+
+ml/reports/
+  ├── metrics.json
+  ├── feature_importance.png
+  ├── roc_curve.png
+  └── pr_curve.png
+
+backend/
+  └── pension.db                  ← seeded SQLite database
+```
+
+---
+
+## 🧪 Tests
+
+```bash
+# From project root
 source .venv/bin/activate
 pytest ml/tests/test_generate_dataset.py backend/tests/test_inference.py
 ```
 
-Frontend build test:
+Frontend build check:
 
 ```bash
 cd frontend
 npm run build
 ```
 
-## Docker
+---
 
-You can also run the stack with Docker:
+## 📚 Learning the Codebase
 
-```bash
-docker-compose up --build
-```
+If you're new to the project, read files in this order:
 
-## Troubleshooting
+| Step | File | Why |
+|---|---|---|
+| 1 | `ml/common.py` | Features, model config, thresholding, metric helpers |
+| 2 | `ml/train.py` | Full model training flow |
+| 3 | `backend/services/inference.py` | Bridge between saved model and API |
+| 4 | `backend/main.py` | How the backend starts and wires services |
+| 5 | `frontend/src/api/client.ts` | How the UI calls the backend |
+| 6 | `frontend/src/App.tsx` | Layout, routing, and page structure |
 
-### The backend says model artifacts are missing
+---
 
-Re-run:
+## 🐛 Troubleshooting
+
+<details>
+<summary><strong>Backend says model artifacts are missing</strong></summary>
+
+Re-run the ML pipeline:
 
 ```bash
 cd ml
@@ -418,53 +399,69 @@ python generate_dataset.py
 python train.py
 MPLCONFIGDIR=/tmp/mpl-cache XDG_CACHE_HOME=/tmp/font-cache python evaluate.py
 ```
+</details>
 
-### The frontend loads but shows API errors
+<details>
+<summary><strong>Frontend loads but shows API errors</strong></summary>
 
-Make sure:
+- Confirm the backend is running on `http://127.0.0.1:8000`
+- Confirm `VITE_API_URL=http://127.0.0.1:8000` is set in `frontend/.env`
+- Check for CORS errors in the browser console — set `FRONTEND_ORIGIN` correctly on the backend
+</details>
 
-- the backend is running on `127.0.0.1:8000`
-- `VITE_API_URL` points to the backend
+<details>
+<summary><strong>Analytics images are missing on the dashboard</strong></summary>
 
-### The analytics images are missing
+These files must exist before starting the backend:
 
-Make sure:
-
-- `ml/reports/feature_importance.png`
-- `ml/reports/roc_curve.png`
-- `ml/reports/pr_curve.png`
-- `ml/reports/metrics.json`
-
-all exist before starting the backend.
-
-## Quick Summary
-
-If you only want the shortest usage flow:
-
-```bash
-cd /Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system
-source .venv/bin/activate
-cd ml && python generate_dataset.py && python train.py && MPLCONFIGDIR=/tmp/mpl-cache XDG_CACHE_HOME=/tmp/font-cache python evaluate.py && cd ..
-cd backend && python seed.py && cd ..
+```
+ml/reports/feature_importance.png
+ml/reports/roc_curve.png
+ml/reports/pr_curve.png
+ml/reports/metrics.json
 ```
 
-Then open two terminals:
+Run `evaluate.py` again if any are absent.
+</details>
 
-Terminal 1:
+<details>
+<summary><strong>Port already in use</strong></summary>
 
-```bash
-cd /Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/backend
-source ../.venv/bin/activate
-uvicorn main:app --host 127.0.0.1 --port 8000 --reload
-```
-
-Terminal 2:
+Kill existing processes and retry:
 
 ```bash
-cd /Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/frontend
-npm run dev -- --host 127.0.0.1 --port 5173
+# Backend
+lsof -ti:8000 | xargs kill -9
+
+# Frontend
+lsof -ti:5173 | xargs kill -9
 ```
+</details>
 
-Then visit:
+---
 
-- [http://127.0.0.1:5173](http://127.0.0.1:5173)
+## 🏗️ Tech Stack
+
+<div align="center">
+
+| Layer | Technology |
+|---|---|
+| **ML / Data** | ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white) ![XGBoost](https://img.shields.io/badge/XGBoost-FF6600?style=flat-square&logo=xgboost&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=flat-square&logo=scikitlearn&logoColor=white) ![pandas](https://img.shields.io/badge/pandas-150458?style=flat-square&logo=pandas&logoColor=white) ![NumPy](https://img.shields.io/badge/NumPy-013243?style=flat-square&logo=numpy&logoColor=white) |
+| **Backend** | ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white) ![SQLite](https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white) ![Uvicorn](https://img.shields.io/badge/Uvicorn-4051B5?style=flat-square&logo=gunicorn&logoColor=white) |
+| **Frontend** | ![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white) |
+| **Testing** | ![pytest](https://img.shields.io/badge/pytest-0A9EDC?style=flat-square&logo=pytest&logoColor=white) |
+| **DevOps** | ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white) |
+
+</div>
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+<div align="center">
+  <sub>Built with ☕ as part of Semester 8 capstone work.</sub>
+</div>
