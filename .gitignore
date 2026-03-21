@@ -11,5 +11,4 @@ node_modules/
 dist/
 coverage/
 backend/pension.db
-backend/*.db
 frontend/dist/
