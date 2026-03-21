@@ -1,0 +1,150 @@
+{
+  "generated_at": "2026-03-21T06:26:52.935904+00:00",
+  "selected_threshold": 0.31,
+  "targets": {
+    "recall": 0.95,
+    "accuracy": 0.95,
+    "f1": 0.94,
+    "latency_mean_ms": 5.0
+  },
+  "performance_comparison": [
+    {
+      "model": "Rule-Based System",
+      "accuracy": 0.8591,
+      "precision": 0.4893,
+      "recall": 1.0,
+      "f1": 0.6571,
+      "roc_auc": 0.9186,
+      "pr_auc": 0.7447
+    },
+    {
+      "model": "Logistic Regression",
+      "accuracy": 0.9569,
+      "precision": 0.763,
+      "recall": 0.9874,
+      "f1": 0.8608,
+      "roc_auc": 0.9965,
+      "pr_auc": 0.9799
+    },
+    {
+      "model": "Proposed GBDT",
+      "accuracy": 0.9893,
+      "precision": 0.9266,
+      "recall": 1.0,
+      "f1": 0.9619,
+      "roc_auc": 0.9998,
+      "pr_auc": 0.9984
+    }
+  ],
+  "confusion_matrix": {
+    "tp": 1350,
+    "tn": 8543,
+    "fp": 107,
+    "fn": 0
+  },
+  "paper_reference_confusion_matrix": {
+    "tp": 8910,
+    "fn": 460,
+    "fp": 380,
+    "tn": 3250
+  },
+  "feature_importance": [
+    {
+      "feature": "biometric_status",
+      "label": "Biometric Status",
+      "importance": 0.5633659362792969
+    },
+    {
+      "feature": "pension_credit_anomaly",
+      "label": "Credit Anomaly",
+      "importance": 0.39064598083496094
+    },
+    {
+      "feature": "bank_activity_count",
+      "label": "Bank Activity",
+      "importance": 0.019763413816690445
+    },
+    {
+      "feature": "historical_approval_rate",
+      "label": "Approval Rate",
+      "importance": 0.012984735891222954
+    },
+    {
+      "feature": "life_proof_delay",
+      "label": "Life-Proof Delay",
+      "importance": 0.010578437708318233
+    },
+    {
+      "feature": "age",
+      "label": "Age",
+      "importance": 0.00266149640083313
+    }
+  ],
+  "latency_benchmark_ms": {
+    "mean_ms": 0.16614987794309855,
+    "p95_ms": 0.1856458016845863,
+    "runs": 1000
+  },
+  "distribution": {
+    "age": {
+      "counts": [
+        3436,
+        5685,
+        7980,
+        9305,
+        8721,
+        6565,
+        4407,
+        2375,
+        1122,
+        404
+      ],
+      "edges": [
+        55.0,
+        58.5,
+        62.0,
+        65.5,
+        69.0,
+        72.5,
+        75.99,
+        79.49,
+        82.99,
+        86.49,
+        89.99
+      ]
+    },
+    "life_proof_delay": {
+      "counts": [
+        34902,
+        10500,
+        3174,
+        986,
+        306,
+        88,
+        32,
+        8,
+        2,
+        2
+      ],
+      "edges": [
+        0.0,
+        18.0,
+        36.0,
+        54.0,
+        72.0,
+        90.0,
+        108.0,
+        126.0,
+        144.0,
+        162.0,
+        180.0
+      ]
+    }
+  },
+  "artifacts": {
+    "feature_importance_chart": "/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/ml/reports/feature_importance.png",
+    "roc_curve_chart": "/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/ml/reports/roc_curve.png",
+    "pr_curve_chart": "/Users/shivchauhan/Projects/SEMESTER-8/smart-pension-system/ml/reports/pr_curve.png"
+  },
+  "using_scaler": "StandardScaler"
+}
