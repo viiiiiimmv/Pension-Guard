@@ -51,7 +51,7 @@ async def lifespan(app: FastAPI):
 
     try:
         app.state.inference_service = InferenceService()
-    except ModelNotFoundError as exc:
+    except (ModelNotFoundError, Exception) as exc:
         app.state.model_error = str(exc)
     yield
 
