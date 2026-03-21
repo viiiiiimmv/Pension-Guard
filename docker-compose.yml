@@ -1,0 +1,32 @@
+services:
+  ml:
+    build: ./ml
+    command: python train.py && python evaluate.py
+    volumes:
+      - ./ml/models:/app/models
+      - ./ml/data:/app/data
+      - ./ml/reports:/app/reports
+
+  backend:
+    build: ./backend
+    depends_on:
+      - ml
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./pension.db
+      - ML_MODELS_PATH=/app/ml/models
+      - ML_REPORTS_PATH=/app/ml/reports/metrics.json
+      - FRONTEND_ORIGIN=http://localhost:5173
+    volumes:
+      - ./ml/models:/app/ml/models
+      - ./ml/reports:/app/ml/reports
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000
