@@ -24,15 +24,15 @@ const columns = [
 
 export function PensionerTable({ items, sortBy, sortOrder, onSort, onSelect }: PensionerTableProps) {
   return (
-    <div className="theme-table overflow-hidden rounded-3xl border">
-      <div className="overflow-x-auto">
+    <div className="theme-table flex h-full min-h-0 flex-col overflow-hidden rounded-3xl border">
+      <div className="min-h-0 flex-1 overflow-auto overscroll-contain">
         <table className="min-w-full">
           <thead className="theme-table-head">
             <tr>
               {columns.map((column) => (
                 <th
                   key={column.key}
-                  className="px-5 py-4 text-left text-xs uppercase tracking-[0.24em]"
+                  className="theme-table-head sticky top-0 z-10 px-5 py-4 text-left text-xs uppercase tracking-[0.24em]"
                 >
                   {["age", "life_proof_delay", "fraud_probability"].includes(column.key) ? (
                     <button

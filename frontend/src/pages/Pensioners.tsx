@@ -42,8 +42,8 @@ export function Pensioners() {
   const emptyState = useMemo(() => !pensionerQuery.isLoading && items.length === 0, [items.length, pensionerQuery.isLoading]);
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[1.45fr_0.7fr]">
-      <div className="space-y-5">
+    <div className="grid gap-6 xl:h-[calc(100dvh-17rem)] xl:grid-cols-[minmax(0,1.45fr)_minmax(320px,0.7fr)] xl:overflow-hidden">
+      <div className="flex min-h-0 flex-col gap-5">
         <div className="theme-card rounded-3xl border p-5">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
@@ -83,26 +83,28 @@ export function Pensioners() {
           </div>
         </div>
 
-        {emptyState ? (
-          <div className="theme-empty rounded-3xl border p-8">
-            No pensioners matched the current search and filter combination.
-          </div>
-        ) : (
-          <PensionerTable
-            items={items}
-            sortBy={sortBy}
-            sortOrder={sortOrder}
-            onSelect={setSelected}
-            onSort={(column) => {
-              if (sortBy === column) {
-                setSortOrder((current) => (current === "asc" ? "desc" : "asc"));
-              } else {
-                setSortBy(column);
-                setSortOrder("desc");
-              }
-            }}
-          />
-        )}
+        <div className="min-h-0 flex-1">
+          {emptyState ? (
+            <div className="theme-empty flex h-full items-center rounded-3xl border p-8">
+              No pensioners matched the current search and filter combination.
+            </div>
+          ) : (
+            <PensionerTable
+              items={items}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+              onSelect={setSelected}
+              onSort={(column) => {
+                if (sortBy === column) {
+                  setSortOrder((current) => (current === "asc" ? "desc" : "asc"));
+                } else {
+                  setSortBy(column);
+                  setSortOrder("desc");
+                }
+              }}
+            />
+          )}
+        </div>
 
         <div className="theme-card flex items-center justify-between rounded-3xl border px-5 py-4">
           <p className="text-sm" style={{ color: "var(--theme-muted)" }}>
@@ -129,7 +131,7 @@ export function Pensioners() {
         </div>
       </div>
 
-      <aside className="theme-card rounded-3xl border p-5">
+      <aside className="theme-card rounded-3xl border p-5 xl:min-h-0 xl:overflow-y-auto xl:overscroll-contain">
         <p className="text-xs uppercase tracking-[0.28em]" style={{ color: "var(--theme-soft)" }}>
           Record Detail
         </p>
