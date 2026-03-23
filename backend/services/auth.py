@@ -8,6 +8,7 @@ from datetime import UTC, datetime, timedelta
 
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -41,6 +42,9 @@ class AuthService:
         self.passcode = os.getenv("AUTH_LOGIN_CODE", "").strip()
         self.token_secret = os.getenv("AUTH_TOKEN_SECRET", "").strip()
         self.session_ttl_hours = int(os.getenv("AUTH_SESSION_TTL_HOURS", "12"))
+        self.session_touch_interval = timedelta(
+            minutes=max(0, int(os.getenv("AUTH_SESSION_TOUCH_INTERVAL_MINUTES", "15")))
+        )
 
     def _ensure_auth_configured(self) -> None:
         if not self.token_secret:
@@ -78,6 +82,7 @@ class AuthService:
             email=self.identity,
             token_hash=self._hash_value(raw_token),
             created_at=now,
+            last_used_at=now,
             expires_at=now + timedelta(hours=self.session_ttl_hours),
         )
         db.add(session)
@@ -108,11 +113,22 @@ class AuthService:
                 db.commit()
             raise AuthServiceError("Authentication required.", status.HTTP_401_UNAUTHORIZED)
 
+        self._touch_session(db, session, now)
+        return session
+
+    def _touch_session(self, db: Session, session: AuthSession, now: datetime) -> None:
+        if self.session_touch_interval.total_seconds() > 0 and session.last_used_at is not None:
+            if now - session.last_used_at < self.session_touch_interval:
+                return
+
         session.last_used_at = now
         db.add(session)
-        db.commit()
-        db.refresh(session)
-        return session
+        try:
+            # Session validation must stay resilient even if a non-critical timestamp write is blocked.
+            db.commit()
+            db.refresh(session)
+        except SQLAlchemyError:
+            db.rollback()
 
     def revoke_session(self, db: Session, token: str) -> None:
         token_hash = self._hash_value(token)
