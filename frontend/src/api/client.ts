@@ -1,8 +1,6 @@
 import axios from "axios";
 
-import { emitUnauthorizedEvent, getStoredAuthToken } from "../auth";
 import type {
-  AuthSessionResponse,
   ConfusionMatrixResponse,
   DistributionResponse,
   FeatureImportanceItem,
@@ -13,7 +11,6 @@ import type {
   PredictionResponse,
   StatusFilter,
   SummaryResponse,
-  TokenResponse,
 } from "../types";
 
 const baseURL = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
@@ -25,27 +22,6 @@ export const api = axios.create({
   },
 });
 
-api.interceptors.request.use((config) => {
-  const token = getStoredAuthToken();
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    const statusCode = error.response?.status;
-    const requestUrl = String(error.config?.url ?? "");
-    const isAuthEndpoint = requestUrl.startsWith("/api/auth/");
-    if (statusCode === 401 && !isAuthEndpoint && getStoredAuthToken()) {
-      emitUnauthorizedEvent();
-    }
-    return Promise.reject(error);
-  },
-);
-
 export interface PensionerQuery {
   page?: number;
   page_size?: number;
@@ -56,11 +32,6 @@ export interface PensionerQuery {
 }
 
 export const fetchHealth = async () => (await api.get<HealthResponse>("/api/health")).data;
-export const loginWithPasscode = async (payload: { passcode: string }) =>
-  (await api.post<TokenResponse>("/api/auth/login", payload)).data;
-export const fetchCurrentSession = async () =>
-  (await api.get<AuthSessionResponse>("/api/auth/me")).data;
-export const logoutSession = async () => (await api.post("/api/auth/logout")).data;
 export const fetchSummary = async () => (await api.get<SummaryResponse>("/api/analytics/summary")).data;
 export const fetchMetrics = async () => (await api.get<MetricsResponse>("/api/analytics/metrics")).data;
 export const fetchConfusion = async () =>

@@ -3,11 +3,10 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 
 import settings
-from services.auth import AuthenticatedSession, require_authenticated_session
 
 router = APIRouter(prefix="/api/reports", tags=["reports"])
 
@@ -19,7 +18,7 @@ ALLOWED_REPORTS = {"roc_curve.png", "pr_curve.png", "feature_importance.png"}
 
 
 @router.get("/{filename}")
-def get_report(filename: str, _: AuthenticatedSession = Depends(require_authenticated_session)) -> FileResponse:
+def get_report(filename: str) -> FileResponse:
     if filename not in ALLOWED_REPORTS:
         raise HTTPException(status_code=404, detail="Report not found")
 

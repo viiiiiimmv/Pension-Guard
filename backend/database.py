@@ -35,7 +35,6 @@ def get_db() -> Generator[Session, None, None]:
 
 
 def create_tables() -> None:
-    from models.auth import AuthSession  # noqa: F401
     from models.database import Pensioner  # noqa: F401
 
     Base.metadata.create_all(bind=engine)

@@ -106,15 +106,3 @@ export interface HealthResponse {
   model_error: string | null;
   reports_dir: string;
 }
-
-export interface TokenResponse {
-  access_token: string;
-  token_type: "bearer";
-  identity: string;
-  expires_at: string;
-}
-
-export interface AuthSessionResponse {
-  identity: string;
-  expires_at: string;
-}

@@ -134,18 +134,3 @@ class DistributionResponse(BaseModel):
     age: DistributionSeries
     life_proof_delay: DistributionSeries
 
-
-class PasswordLoginPayload(BaseModel):
-    passcode: str = Field(..., pattern=r"^\d{8}$")
-
-
-class TokenResponse(BaseModel):
-    access_token: str
-    token_type: Literal["bearer"]
-    identity: str
-    expires_at: datetime
-
-
-class AuthSessionResponse(BaseModel):
-    identity: str
-    expires_at: datetime

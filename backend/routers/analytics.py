@@ -11,13 +11,7 @@ from models.schemas import (
     MetricsResponse,
     SummaryResponse,
 )
-from services.auth import require_authenticated_session
-
-router = APIRouter(
-    prefix="/api/analytics",
-    tags=["analytics"],
-    dependencies=[Depends(require_authenticated_session)],
-)
+router = APIRouter(prefix="/api/analytics", tags=["analytics"])
 
 
 @router.get("/summary", response_model=SummaryResponse)

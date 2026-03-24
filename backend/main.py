@@ -10,13 +10,11 @@ from fastapi.responses import JSONResponse
 
 import settings
 from database import create_tables
-from routers.auth import router as auth_router
 from routers.analytics import router as analytics_router
 from routers.pensioners import router as pensioners_router
 from routers.predict import router as predict_router
 from routers.reports import router as reports_router
 from services.analytics import AnalyticsService
-from services.auth import AuthService, AuthServiceError
 from services.inference import InferenceService, ModelNotFoundError
 
 REPORTS_DIR = Path(
@@ -45,7 +43,6 @@ def build_allowed_origins() -> list[str]:
 async def lifespan(app: FastAPI):
     create_tables()
     app.state.analytics_service = AnalyticsService()
-    app.state.auth_service = AuthService()
     app.state.inference_service = None
     app.state.model_error = None
 
@@ -71,8 +68,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-app.include_router(auth_router)
 app.include_router(pensioners_router)
 app.include_router(predict_router)
 app.include_router(analytics_router)
@@ -82,11 +77,6 @@ app.include_router(reports_router)
 @app.exception_handler(ModelNotFoundError)
 async def handle_model_not_found(_: Request, exc: ModelNotFoundError) -> JSONResponse:
     return JSONResponse(status_code=503, content={"error": "ModelNotFoundError", "detail": str(exc)})
-
-
-@app.exception_handler(AuthServiceError)
-async def handle_auth_error(_: Request, exc: AuthServiceError) -> JSONResponse:
-    return JSONResponse(status_code=exc.status_code, content={"error": "AuthServiceError", "detail": exc.detail})
 
 
 @app.exception_handler(Exception)

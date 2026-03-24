@@ -20,14 +20,9 @@ from models.schemas import (
     PensionerUpdate,
 )
 from seed import seed_from_dataframe
-from services.auth import require_authenticated_session
 from services.inference import FEATURE_ORDER, ModelNotFoundError
 
-router = APIRouter(
-    prefix="/api/pensioners",
-    tags=["pensioners"],
-    dependencies=[Depends(require_authenticated_session)],
-)
+router = APIRouter(prefix="/api/pensioners", tags=["pensioners"])
 
 
 def _next_pensioner_id(db: Session) -> str:

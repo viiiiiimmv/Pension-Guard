@@ -4,22 +4,18 @@ import { useQuery } from "@tanstack/react-query";
 import {
   ActivitySquare,
   LayoutDashboard,
-  LogOut,
   MoonStar,
   ShieldAlert,
   SunMedium,
   UsersRound,
 } from "lucide-react";
 
-import { clearAuthToken, getStoredAuthToken, storeAuthToken, AUTH_UNAUTHORIZED_EVENT } from "./auth";
-import { fetchCurrentSession, fetchHealth, logoutSession } from "./api/client";
-import { LoginScreen } from "./components/LoginScreen";
+import { fetchHealth } from "./api/client";
 import { Analytics } from "./pages/Analytics";
 import { Dashboard } from "./pages/Dashboard";
 import { Pensioners } from "./pages/Pensioners";
 import { Predict } from "./pages/Predict";
 import { applyTheme, persistTheme, resolveTheme, type Theme } from "./theme";
-import type { AuthSessionResponse, TokenResponse } from "./types";
 
 const navigation = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -30,9 +26,6 @@ const navigation = [
 
 export default function App() {
   const [theme, setTheme] = useState<Theme>(() => resolveTheme());
-  const [accessToken, setAccessToken] = useState<string | null>(() => getStoredAuthToken());
-  const [session, setSession] = useState<AuthSessionResponse | null>(null);
-  const [isCheckingSession, setIsCheckingSession] = useState(Boolean(getStoredAuthToken()));
   const healthQuery = useQuery({ queryKey: ["health"], queryFn: fetchHealth, retry: false });
   const modelReady = healthQuery.data?.model_ready;
   const nextTheme = theme === "light" ? "dark" : "light";
@@ -41,87 +34,6 @@ export default function App() {
     applyTheme(theme);
     persistTheme(theme);
   }, [theme]);
-
-  useEffect(() => {
-    const handleUnauthorized = () => {
-      clearAuthToken();
-      setAccessToken(null);
-      setSession(null);
-      setIsCheckingSession(false);
-    };
-
-    window.addEventListener(AUTH_UNAUTHORIZED_EVENT, handleUnauthorized);
-    return () => {
-      window.removeEventListener(AUTH_UNAUTHORIZED_EVENT, handleUnauthorized);
-    };
-  }, []);
-
-  useEffect(() => {
-    let active = true;
-
-    if (!accessToken) {
-      setSession(null);
-      setIsCheckingSession(false);
-      return () => {
-        active = false;
-      };
-    }
-
-    setIsCheckingSession(true);
-    fetchCurrentSession()
-      .then((payload) => {
-        if (!active) {
-          return;
-        }
-        setSession(payload);
-      })
-      .catch(() => {
-        if (!active) {
-          return;
-        }
-        clearAuthToken();
-        setAccessToken(null);
-        setSession(null);
-      })
-      .finally(() => {
-        if (active) {
-          setIsCheckingSession(false);
-        }
-      });
-
-    return () => {
-      active = false;
-    };
-  }, [accessToken]);
-
-  function handleAuthenticated(payload: TokenResponse) {
-    storeAuthToken(payload.access_token);
-    setAccessToken(payload.access_token);
-    setSession({ identity: payload.identity, expires_at: payload.expires_at });
-    setIsCheckingSession(false);
-  }
-
-  async function handleLogout() {
-    try {
-      await logoutSession();
-    } catch {
-      // Best-effort logout; local session is cleared regardless.
-    }
-    clearAuthToken();
-    setAccessToken(null);
-    setSession(null);
-  }
-
-  if (!session) {
-    return (
-      <LoginScreen
-        theme={theme}
-        onToggleTheme={() => setTheme(nextTheme)}
-        onAuthenticated={handleAuthenticated}
-        isCheckingSession={isCheckingSession}
-      />
-    );
-  }
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "var(--theme-bg)", color: "var(--theme-text)" }}>
@@ -163,13 +75,13 @@ export default function App() {
             <div className="flex flex-wrap items-center gap-2 lg:gap-3">
               <div className="theme-card-soft min-w-[220px] rounded-2xl border px-4 py-3">
                 <p className="text-[11px] uppercase tracking-[0.24em]" style={{ color: "var(--theme-soft)" }}>
-                  Signed in as
+                  Access Scope
                 </p>
                 <p className="mt-1 text-sm font-medium" style={{ color: "var(--theme-text)" }}>
-                  {session.identity}
+                  Team Workspace
                 </p>
                 <p className="mt-1 text-xs" style={{ color: "var(--theme-muted)" }}>
-                  Session valid until {new Date(session.expires_at).toLocaleString()}
+                  Internal shared deployment with direct dashboard access.
                 </p>
               </div>
 
@@ -206,15 +118,6 @@ export default function App() {
               >
                 {theme === "light" ? <MoonStar className="h-4 w-4" /> : <SunMedium className="h-4 w-4" />}
                 <span>{theme === "light" ? "Dark Mode" : "Light Mode"}</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="theme-outline-btn inline-flex items-center gap-2 rounded-2xl border px-4 py-3 text-sm font-medium transition"
-              >
-                <LogOut className="h-4 w-4" />
-                <span>Logout</span>
               </button>
             </div>
           </div>

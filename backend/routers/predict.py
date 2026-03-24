@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Request
 
 from models.schemas import PredictionRequest, PredictionResponse
-from services.auth import require_authenticated_session
 from services.inference import ModelNotFoundError
 
-router = APIRouter(prefix="/api", tags=["prediction"], dependencies=[Depends(require_authenticated_session)])
+router = APIRouter(prefix="/api", tags=["prediction"])
 
 
 @router.post("/predict", response_model=PredictionResponse)
