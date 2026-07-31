@@ -10,44 +10,44 @@ interface StatCardProps {
 
 const accentMap: Record<StatCardProps["accent"], CSSProperties> = {
   signal: {
-    borderColor: "var(--theme-accent-border)",
-    backgroundColor: "var(--theme-accent-soft)",
-    color: "var(--theme-accent)",
+    borderColor: "var(--theme-border)",
+    backgroundColor: "var(--theme-surface-muted)",
+    color: "var(--theme-text)",
   },
   safe: {
-    borderColor: "var(--theme-success-border)",
-    backgroundColor: "var(--theme-success-soft)",
-    color: "var(--theme-success)",
+    borderColor: "var(--theme-border)",
+    backgroundColor: "var(--theme-surface-muted)",
+    color: "var(--theme-text)",
   },
   danger: {
-    borderColor: "var(--theme-danger-border)",
-    backgroundColor: "var(--theme-danger-soft)",
-    color: "var(--theme-danger)",
+    borderColor: "var(--theme-border)",
+    backgroundColor: "var(--theme-surface-muted)",
+    color: "var(--theme-text)",
   },
   sand: {
-    borderColor: "var(--theme-warning-border)",
-    backgroundColor: "var(--theme-warning-soft)",
-    color: "var(--theme-warning)",
+    borderColor: "var(--theme-border)",
+    backgroundColor: "var(--theme-surface-muted)",
+    color: "var(--theme-text)",
   },
 };
 
 export function StatCard({ title, value, subtitle, accent, icon }: StatCardProps) {
   return (
-    <div className="theme-panel rounded-3xl border p-5">
-      <div className="mb-5 flex items-center justify-between">
+    <div className="theme-panel rounded-[1.6rem] border p-5 transition duration-200 hover:-translate-y-0.5">
+      <div className="mb-5 flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.32em]" style={{ color: "var(--theme-soft)" }}>
+          <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
             {title}
           </p>
-          <p className="mt-3 text-3xl font-semibold" style={{ color: "var(--theme-text)" }}>
+          <p className="mt-3 text-3xl font-semibold tracking-[-0.02em]" style={{ color: "var(--theme-text)" }}>
             {value}
           </p>
         </div>
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl border" style={accentMap[accent]}>
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[1.1rem] border" style={accentMap[accent]}>
           {icon}
         </div>
       </div>
-      <p className="text-sm" style={{ color: "var(--theme-muted)" }}>
+      <p className="text-sm leading-6" style={{ color: "var(--theme-muted)" }}>
         {subtitle}
       </p>
     </div>

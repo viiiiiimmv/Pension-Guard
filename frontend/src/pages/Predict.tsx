@@ -27,19 +27,19 @@ export function Predict() {
   return (
     <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
       <form
-        className="theme-card rounded-3xl border p-6"
+        className="theme-card rounded-[1.7rem] border p-6"
         onSubmit={(event) => {
           event.preventDefault();
           mutation.mutate(formState);
         }}
       >
-        <p className="text-xs uppercase tracking-[0.28em]" style={{ color: "var(--theme-soft)" }}>
+        <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
           Single Record Inference
         </p>
-        <h2 className="mt-2 text-2xl font-semibold" style={{ color: "var(--theme-text)" }}>
+        <h2 className="mt-2 text-2xl font-semibold tracking-[-0.02em]" style={{ color: "var(--theme-text)" }}>
           Eligibility prediction form
         </h2>
-        <p className="mt-3 max-w-2xl text-sm" style={{ color: "var(--theme-muted)" }}>
+        <p className="mt-3 max-w-2xl text-sm leading-6" style={{ color: "var(--theme-muted)" }}>
           Submit one pensioner profile to inspect risk, confidence, inference time, and a feature-level breakdown.
         </p>
 
@@ -52,7 +52,7 @@ export function Predict() {
             { key: "historical_approval_rate", label: "Historical Approval Rate", hint: "0.0-1.0" },
             { key: "pension_credit_anomaly", label: "Pension Credit Anomaly", hint: "0 or 1" },
           ].map((field) => (
-            <label key={field.key} className="theme-card-soft rounded-3xl border p-4">
+            <label key={field.key} className="theme-card-soft rounded-[1.3rem] border p-4">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium" style={{ color: "var(--theme-text)" }}>
                   {field.label}
@@ -71,7 +71,7 @@ export function Predict() {
                     [field.key]: Number(event.target.value),
                   }))
                 }
-                className="theme-input mt-4 w-full rounded-2xl border px-4 py-3 outline-none"
+                className="theme-input mt-4 w-full rounded-[1.1rem] border px-4 py-3 outline-none"
               />
             </label>
           ))}
@@ -80,13 +80,13 @@ export function Predict() {
         <button
           type="submit"
           disabled={mutation.isPending}
-          className="theme-primary-btn mt-8 rounded-2xl px-5 py-3 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60"
+          className="theme-primary-btn mt-8 rounded-[1.1rem] px-5 py-3 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60"
         >
           {mutation.isPending ? "Running prediction..." : "Submit for inference"}
         </button>
       </form>
 
-      <section className="theme-card rounded-3xl border p-6">
+      <section className="theme-card rounded-[1.7rem] border p-6">
         <p className="text-xs uppercase tracking-[0.28em]" style={{ color: "var(--theme-soft)" }}>
           Inference Result
         </p>
@@ -95,7 +95,7 @@ export function Predict() {
         </h2>
 
         {!mutation.data ? (
-          <div className="theme-empty mt-8 rounded-3xl border border-dashed p-6 text-sm">
+          <div className="theme-empty mt-8 rounded-[1.4rem] border border-dashed p-6 text-sm leading-6">
             Run a prediction to see the eligibility status, fraud gauge, and feature contribution breakdown.
           </div>
         ) : (
@@ -108,7 +108,7 @@ export function Predict() {
                   </p>
                   <p
                     className="mt-3 text-4xl font-semibold"
-                    style={{ color: mutation.data.eligible ? "var(--theme-success)" : "var(--theme-danger)" }}
+                    style={{ color: "var(--theme-text)" }}
                   >
                     {mutation.data.eligible ? "Eligible" : "Flagged"}
                   </p>
@@ -187,12 +187,7 @@ export function Predict() {
                         className="h-2 rounded-full"
                         style={{
                           width: `${Math.max(feature.contribution, 6)}%`,
-                          backgroundColor:
-                            feature.direction === "risk"
-                              ? "var(--theme-danger)"
-                              : feature.direction === "protective"
-                                ? "var(--theme-success)"
-                                : "var(--theme-soft)",
+                          backgroundColor: "var(--theme-text)",
                         }}
                       />
                     </div>

@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { NavLink, Route, Routes } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
   ActivitySquare,
   LayoutDashboard,
-  MoonStar,
   ShieldAlert,
-  SunMedium,
   UsersRound,
 } from "lucide-react";
 
@@ -15,7 +13,6 @@ import { Analytics } from "./pages/Analytics";
 import { Dashboard } from "./pages/Dashboard";
 import { Pensioners } from "./pages/Pensioners";
 import { Predict } from "./pages/Predict";
-import { applyTheme, persistTheme, resolveTheme, type Theme } from "./theme";
 
 const navigation = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -25,10 +22,8 @@ const navigation = [
 ];
 
 export default function App() {
-  const [theme, setTheme] = useState<Theme>(() => resolveTheme());
   const healthQuery = useQuery({ queryKey: ["health"], queryFn: fetchHealth, retry: false });
   const modelReady = healthQuery.data?.model_ready;
-  const nextTheme = theme === "light" ? "dark" : "light";
   const healthMessage = healthQuery.isError
     ? "API unavailable"
     : modelReady
@@ -37,23 +32,44 @@ export default function App() {
   const healthDetail = healthQuery.data?.model_error ?? (healthQuery.isError ? "The API endpoint could not be reached. Set VITE_API_URL to a deployed backend URL or deploy the FastAPI service." : null);
 
   useEffect(() => {
-    applyTheme(theme);
-    persistTheme(theme);
-  }, [theme]);
+    document.documentElement.style.colorScheme = "dark";
+  }, []);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "var(--theme-bg)", color: "var(--theme-text)" }}>
-      <div className="mx-auto min-h-screen w-full max-w-[1840px] px-3 py-3 lg:px-4">
-        <header className="theme-panel rounded-[1.75rem] border px-4 py-4 lg:px-5">
-          <div className="flex flex-col gap-4 2xl:flex-row 2xl:items-center 2xl:justify-between">
-            <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:gap-5">
+      <div className="mx-auto flex min-h-screen w-full max-w-[1700px] flex-col px-3 py-3 lg:px-4 lg:py-4">
+        <header className="theme-panel rounded-[2rem] border px-4 py-4 lg:px-6 lg:py-5">
+          <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+            <div className="flex flex-col gap-3">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.36em]" style={{ color: "var(--theme-soft)" }}>
+                PensionGuard AI
+              </p>
               <div>
-                <p className="text-xs uppercase tracking-[0.34em]" style={{ color: "var(--theme-soft)" }}>
-                  PensionGuard AI
-                </p>
-                <h1 className="mt-1 text-[1.9rem] font-semibold leading-tight" style={{ color: "var(--theme-text)" }}>
+                <h1 className="text-[1.7rem] font-semibold tracking-[-0.02em] sm:text-[2.05rem]" style={{ color: "var(--theme-text)" }}>
                   Officer Console
                 </h1>
+                <p className="mt-2 max-w-2xl text-sm leading-6" style={{ color: "var(--theme-muted)" }}>
+                  A premium, monochrome operating layer for pension eligibility review, fraud detection, and model oversight.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+              <div className="theme-card-soft min-w-[220px] rounded-[1.4rem] border px-4 py-3">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em]" style={{ color: "var(--theme-soft)" }}>
+                  System Status
+                </p>
+                <div className="mt-2 flex items-center gap-2">
+                  <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: "var(--theme-text)" }} />
+                  <span className="text-sm font-medium" style={{ color: "var(--theme-text)" }}>
+                    {healthMessage}
+                  </span>
+                </div>
+                {healthDetail ? (
+                  <p className="mt-2 text-xs leading-5" style={{ color: "var(--theme-soft)" }}>
+                    {healthDetail}
+                  </p>
+                ) : null}
               </div>
 
               <nav className="flex flex-wrap gap-2">
@@ -65,7 +81,7 @@ export default function App() {
                       to={item.to}
                       end={item.to === "/"}
                       className={({ isActive }) =>
-                        `inline-flex items-center gap-2 rounded-2xl border px-4 py-2.5 text-sm font-medium transition ${
+                        `inline-flex items-center gap-2 rounded-[1.1rem] border px-3.5 py-2.5 text-sm font-medium transition ${
                           isActive ? "theme-nav-active" : "theme-nav-idle"
                         }`
                       }
@@ -77,91 +93,39 @@ export default function App() {
                 })}
               </nav>
             </div>
-
-            <div className="flex flex-wrap items-center gap-2 lg:gap-3">
-              <div className="theme-card-soft min-w-[220px] rounded-2xl border px-4 py-3">
-                <p className="text-[11px] uppercase tracking-[0.24em]" style={{ color: "var(--theme-soft)" }}>
-                  Access Scope
-                </p>
-                <p className="mt-1 text-sm font-medium" style={{ color: "var(--theme-text)" }}>
-                  Team Workspace
-                </p>
-                <p className="mt-1 text-xs" style={{ color: "var(--theme-muted)" }}>
-                  Internal shared deployment with direct dashboard access.
-                </p>
-              </div>
-
-              <div className="theme-card-soft min-w-[220px] rounded-2xl border px-4 py-3">
-                <p className="text-[11px] uppercase tracking-[0.24em]" style={{ color: "var(--theme-soft)" }}>
-                  Model Health
-                </p>
-                <div className="mt-2 flex items-center gap-3">
-                  <span
-                    className="h-3 w-3 rounded-full"
-                    style={{
-                      backgroundColor: modelReady ? "var(--theme-success)" : "var(--theme-danger)",
-                      boxShadow: modelReady
-                        ? "0 0 20px color-mix(in srgb, var(--theme-success) 28%, transparent)"
-                        : "0 0 20px color-mix(in srgb, var(--theme-danger) 24%, transparent)",
-                    }}
-                  />
-                  <p className="text-sm" style={{ color: "var(--theme-muted)" }}>
-                    {healthMessage}
-                  </p>
-                </div>
-                {healthDetail ? (
-                  <p className="mt-2 text-xs leading-5" style={{ color: "var(--theme-soft)" }}>
-                    {healthDetail}
-                  </p>
-                ) : null}
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setTheme(nextTheme)}
-                aria-label={`Switch to ${nextTheme} theme`}
-                className="theme-outline-btn inline-flex items-center gap-2 rounded-2xl border px-4 py-3 text-sm font-medium transition"
-              >
-                {theme === "light" ? <MoonStar className="h-4 w-4" /> : <SunMedium className="h-4 w-4" />}
-                <span>{theme === "light" ? "Dark Mode" : "Light Mode"}</span>
-              </button>
-            </div>
           </div>
         </header>
 
-        <main className="theme-panel mt-3 min-w-0 rounded-[1.75rem] border p-3 lg:p-4">
-          <header className="theme-card-soft mb-4 rounded-[1.5rem] border px-4 py-4 lg:px-5">
-            <p className="text-xs uppercase tracking-[0.34em]" style={{ color: "var(--theme-soft)" }}>
-              Government-grade pension intelligence
-            </p>
-            <div className="mt-3 flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
-              <div>
-                <h2 className="text-3xl font-semibold" style={{ color: "var(--theme-text)" }}>
-                  Smart Pension Distribution System
-                </h2>
-                <p className="mt-1 text-sm" style={{ color: "var(--theme-muted)" }}>
-                  ML-driven eligibility verification, fraud detection, and officer review workflow.
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="theme-card rounded-2xl border px-4 py-3 text-right">
-                  <p className="text-xs uppercase tracking-[0.22em]" style={{ color: "var(--theme-soft)" }}>
-                    Primary Threshold
+        <main className="mt-3 flex-1 rounded-[2rem] border border-white/10 bg-black/10 p-3 lg:p-4">
+          <div className="rounded-[1.7rem] border border-white/10 bg-[rgba(255,255,255,0.02)] p-3 lg:p-4">
+            <header className="theme-card-soft mb-4 rounded-[1.5rem] border px-4 py-4 lg:px-5 lg:py-5">
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.36em]" style={{ color: "var(--theme-soft)" }}>
+                    Government-grade pension intelligence
                   </p>
-                  <p className="mt-1 font-mono text-lg" style={{ color: "var(--theme-text)" }}>
+                  <h2 className="mt-2 text-[1.55rem] font-semibold tracking-[-0.02em] sm:text-[1.95rem]" style={{ color: "var(--theme-text)" }}>
+                    Smart Pension Distribution System
+                  </h2>
+                </div>
+                <div className="rounded-[1.2rem] border border-white/10 bg-black/20 px-4 py-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em]" style={{ color: "var(--theme-soft)" }}>
+                    Primary threshold
+                  </p>
+                  <p className="mt-1 text-sm font-medium" style={{ color: "var(--theme-text)" }}>
                     Fraud probability θ*
                   </p>
                 </div>
               </div>
-            </div>
-          </header>
+            </header>
 
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/pensioners" element={<Pensioners />} />
-            <Route path="/predict" element={<Predict />} />
-            <Route path="/analytics" element={<Analytics />} />
-          </Routes>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/pensioners" element={<Pensioners />} />
+              <Route path="/predict" element={<Predict />} />
+              <Route path="/analytics" element={<Analytics />} />
+            </Routes>
+          </div>
         </main>
       </div>
     </div>

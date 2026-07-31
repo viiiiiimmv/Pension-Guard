@@ -65,11 +65,11 @@ export function Analytics() {
   return (
     <div className="space-y-6">
       <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-        <div className="theme-card rounded-3xl border p-5">
-          <p className="text-xs uppercase tracking-[0.28em]" style={{ color: "var(--theme-soft)" }}>
+        <div className="theme-card rounded-[1.7rem] border p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
             Confusion Matrix
           </p>
-          <h2 className="mt-2 text-2xl font-semibold" style={{ color: "var(--theme-text)" }}>
+          <h2 className="mt-2 text-2xl font-semibold tracking-[-0.02em]" style={{ color: "var(--theme-text)" }}>
             Operational fraud detection outcomes
           </h2>
           <div className="mt-6">
@@ -77,11 +77,11 @@ export function Analytics() {
           </div>
         </div>
 
-        <div className="theme-card rounded-3xl border p-5">
-          <p className="text-xs uppercase tracking-[0.28em]" style={{ color: "var(--theme-soft)" }}>
+        <div className="theme-card rounded-[1.7rem] border p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
             Model Reports
           </p>
-          <h2 className="mt-2 text-2xl font-semibold" style={{ color: "var(--theme-text)" }}>
+          <h2 className="mt-2 text-2xl font-semibold tracking-[-0.02em]" style={{ color: "var(--theme-text)" }}>
             ROC curve artifact
           </h2>
           <div className="theme-card-soft mt-6 overflow-hidden rounded-3xl border p-3">
@@ -101,8 +101,8 @@ export function Analytics() {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
-        <div className="theme-card rounded-3xl border p-5">
-          <p className="text-xs uppercase tracking-[0.28em]" style={{ color: "var(--theme-soft)" }}>
+        <div className="theme-card rounded-[1.7rem] border p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
             Feature Importance
           </p>
           <h2 className="mt-2 text-2xl font-semibold" style={{ color: "var(--theme-text)" }}>
@@ -131,8 +131,8 @@ export function Analytics() {
           </div>
         </div>
 
-        <div className="theme-card rounded-3xl border p-5">
-          <p className="text-xs uppercase tracking-[0.28em]" style={{ color: "var(--theme-soft)" }}>
+        <div className="theme-card rounded-[1.7rem] border p-5">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
             Benchmark Table
           </p>
           <h2 className="mt-2 text-2xl font-semibold" style={{ color: "var(--theme-text)" }}>
