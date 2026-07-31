@@ -29,6 +29,12 @@ export default function App() {
   const healthQuery = useQuery({ queryKey: ["health"], queryFn: fetchHealth, retry: false });
   const modelReady = healthQuery.data?.model_ready;
   const nextTheme = theme === "light" ? "dark" : "light";
+  const healthMessage = healthQuery.isError
+    ? "API unavailable"
+    : modelReady
+      ? "Artifacts loaded"
+      : "Waiting on training artifacts";
+  const healthDetail = healthQuery.data?.model_error ?? (healthQuery.isError ? "The API endpoint could not be reached. Set VITE_API_URL to a deployed backend URL or deploy the FastAPI service." : null);
 
   useEffect(() => {
     applyTheme(theme);
@@ -100,12 +106,12 @@ export default function App() {
                     }}
                   />
                   <p className="text-sm" style={{ color: "var(--theme-muted)" }}>
-                    {modelReady ? "Artifacts loaded" : "Waiting on training artifacts"}
+                    {healthMessage}
                   </p>
                 </div>
-                {healthQuery.data?.model_error ? (
+                {healthDetail ? (
                   <p className="mt-2 text-xs leading-5" style={{ color: "var(--theme-soft)" }}>
-                    {healthQuery.data.model_error}
+                    {healthDetail}
                   </p>
                 ) : null}
               </div>

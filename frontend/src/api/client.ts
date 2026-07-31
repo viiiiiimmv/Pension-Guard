@@ -13,7 +13,7 @@ import type {
   SummaryResponse,
 } from "../types";
 
-const baseURL = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+const baseURL = (import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "/api" : "http://127.0.0.1:8000")).replace(/\/$/, "");
 
 export const api = axios.create({
   baseURL,

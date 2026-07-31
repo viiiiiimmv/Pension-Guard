@@ -36,6 +36,11 @@ def build_allowed_origins() -> list[str]:
             "http://127.0.0.1:5173",
         }
     )
+
+    vercel_project = os.getenv("VERCEL_PROJECT_NAME")
+    if vercel_project:
+        origins.add(f"https://{vercel_project}.vercel.app")
+
     return sorted(origins)
 
 
@@ -63,7 +68,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=build_allowed_origins(),
-    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?",
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?|https://[a-z0-9-]+\.vercel\.app(\.git)?(:\d+)?",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -96,8 +101,9 @@ async def handle_unexpected_error(_: Request, exc: Exception) -> JSONResponse:
 def health(request: Request) -> dict[str, object]:
     service = request.app.state.inference_service
     return {
-        "status": "ok" if service else "degraded",
+        "status": "ok" if service and service.is_ready() else "degraded",
         "model_ready": bool(service and service.is_ready()),
         "model_error": request.app.state.model_error,
         "reports_dir": str(REPORTS_DIR),
+        "backend_origin": os.getenv("FRONTEND_ORIGIN", "http://localhost:5173"),
     }
