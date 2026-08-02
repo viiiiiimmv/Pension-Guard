@@ -35,7 +35,7 @@ export function Dashboard() {
     return (
       <div className="grid gap-5 lg:grid-cols-2">
         {Array.from({ length: 4 }).map((_, index) => (
-          <div key={index} className="theme-card rounded-3xl border h-40 animate-pulse" />
+          <div key={index} className="theme-card h-40 animate-pulse border" />
         ))}
       </div>
     );
@@ -48,7 +48,7 @@ export function Dashboard() {
   if (!summary || !metrics || !distribution) {
     return (
       <div
-        className="rounded-3xl border p-6"
+        className="rounded-lg border p-6"
         style={{
           borderColor: "var(--theme-danger-border)",
           backgroundColor: "var(--theme-danger-soft)",
@@ -110,12 +110,12 @@ export function Dashboard() {
 
       <div className="grid gap-6 xl:grid-cols-[1.45fr_0.9fr]">
         <ModelComparison rows={metrics.performance_comparison} />
-        <div className="theme-card rounded-[1.7rem] border p-5">
+        <div className="theme-card border p-5">
           <div className="mb-4">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
+            <p className="text-[10px] font-semibold uppercase" style={{ color: "var(--theme-soft)" }}>
               Eligibility Mix
             </p>
-            <h3 className="mt-2 text-xl font-semibold tracking-[-0.02em]" style={{ color: "var(--theme-text)" }}>
+            <h3 className="mt-2 text-xl font-semibold" style={{ color: "var(--theme-text)" }}>
               Eligible vs flagged distribution
             </h3>
           </div>
@@ -137,7 +137,7 @@ export function Dashboard() {
           </div>
           <div className="grid gap-3 md:grid-cols-3">
             {pieData.map((item, index) => (
-              <div key={item.name} className="theme-card-soft rounded-[1.2rem] border p-3">
+              <div key={item.name} className="theme-card-soft border p-3">
                 <div className="flex items-center gap-2">
                   <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: piePalette[index] }} />
                   <p className="text-sm" style={{ color: "var(--theme-muted)" }}>
@@ -154,12 +154,12 @@ export function Dashboard() {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-2">
-        <div className="theme-card rounded-[1.7rem] border p-5">
+        <div className="theme-card border p-5">
           <div className="mb-4">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
+            <p className="text-[10px] font-semibold uppercase" style={{ color: "var(--theme-soft)" }}>
               Age Distribution
             </p>
-            <h3 className="mt-2 text-xl font-semibold tracking-[-0.02em]" style={{ color: "var(--theme-text)" }}>
+            <h3 className="mt-2 text-xl font-semibold" style={{ color: "var(--theme-text)" }}>
               Histogram of pensioner age bands
             </h3>
           </div>
@@ -180,12 +180,12 @@ export function Dashboard() {
           </div>
         </div>
 
-        <div className="theme-card rounded-[1.7rem] border p-5">
+        <div className="theme-card border p-5">
           <div className="mb-4">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
+            <p className="text-[10px] font-semibold uppercase" style={{ color: "var(--theme-soft)" }}>
               Life-Proof Delay
             </p>
-            <h3 className="mt-2 text-xl font-semibold tracking-[-0.02em]" style={{ color: "var(--theme-text)" }}>
+            <h3 className="mt-2 text-xl font-semibold" style={{ color: "var(--theme-text)" }}>
               Delay trend across verification buckets
             </h3>
           </div>

@@ -33,17 +33,17 @@ const accentMap: Record<StatCardProps["accent"], CSSProperties> = {
 
 export function StatCard({ title, value, subtitle, accent, icon }: StatCardProps) {
   return (
-    <div className="theme-panel rounded-[1.6rem] border p-5 transition duration-200 hover:-translate-y-0.5">
+    <div className="theme-panel border p-5 transition duration-200 hover:-translate-y-0.5">
       <div className="mb-5 flex items-start justify-between gap-3">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
+          <p className="text-[10px] font-semibold uppercase" style={{ color: "var(--theme-soft)" }}>
             {title}
           </p>
-          <p className="mt-3 text-3xl font-semibold tracking-[-0.02em]" style={{ color: "var(--theme-text)" }}>
+          <p className="mt-3 text-3xl font-semibold" style={{ color: "var(--theme-text)" }}>
             {value}
           </p>
         </div>
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[1.1rem] border" style={accentMap[accent]}>
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border" style={accentMap[accent]}>
           {icon}
         </div>
       </div>

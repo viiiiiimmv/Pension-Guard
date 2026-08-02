@@ -26,7 +26,7 @@ export function EligibilityBadge({ value }: EligibilityBadgeProps) {
   if (value === null) {
     return (
       <span
-        className="rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em]"
+        className="rounded-full border px-3 py-1 text-[10px] font-semibold uppercase"
         style={pendingStyle}
       >
         Pending
@@ -37,7 +37,7 @@ export function EligibilityBadge({ value }: EligibilityBadgeProps) {
   const isEligible = value === 1;
   return (
     <span
-      className="rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.24em]"
+      className="rounded-full border px-3 py-1 text-[10px] font-semibold uppercase"
       style={isEligible ? eligibleStyle : flaggedStyle}
     >
       {isEligible ? "Eligible" : "Flagged"}

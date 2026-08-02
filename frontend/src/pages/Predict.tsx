@@ -27,16 +27,16 @@ export function Predict() {
   return (
     <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
       <form
-        className="theme-card rounded-[1.7rem] border p-6"
+        className="theme-card border p-6"
         onSubmit={(event) => {
           event.preventDefault();
           mutation.mutate(formState);
         }}
       >
-        <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
+        <p className="text-[10px] font-semibold uppercase" style={{ color: "var(--theme-soft)" }}>
           Single Record Inference
         </p>
-        <h2 className="mt-2 text-2xl font-semibold tracking-[-0.02em]" style={{ color: "var(--theme-text)" }}>
+        <h2 className="mt-2 text-2xl font-semibold" style={{ color: "var(--theme-text)" }}>
           Eligibility prediction form
         </h2>
         <p className="mt-3 max-w-2xl text-sm leading-6" style={{ color: "var(--theme-muted)" }}>
@@ -52,12 +52,12 @@ export function Predict() {
             { key: "historical_approval_rate", label: "Historical Approval Rate", hint: "0.0-1.0" },
             { key: "pension_credit_anomaly", label: "Pension Credit Anomaly", hint: "0 or 1" },
           ].map((field) => (
-            <label key={field.key} className="theme-card-soft rounded-[1.3rem] border p-4">
+            <label key={field.key} className="theme-card-soft rounded-lg border p-4">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium" style={{ color: "var(--theme-text)" }}>
                   {field.label}
                 </span>
-                <span className="text-xs uppercase tracking-[0.22em]" style={{ color: "var(--theme-soft)" }}>
+                <span className="text-xs uppercase" style={{ color: "var(--theme-soft)" }}>
                   {field.hint}
                 </span>
               </div>
@@ -71,7 +71,7 @@ export function Predict() {
                     [field.key]: Number(event.target.value),
                   }))
                 }
-                className="theme-input mt-4 w-full rounded-[1.1rem] border px-4 py-3 outline-none"
+                className="theme-input mt-4 w-full rounded-lg border px-4 py-3 outline-none"
               />
             </label>
           ))}
@@ -80,14 +80,14 @@ export function Predict() {
         <button
           type="submit"
           disabled={mutation.isPending}
-          className="theme-primary-btn mt-8 rounded-[1.1rem] px-5 py-3 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60"
+          className="theme-primary-btn mt-8 rounded-lg px-5 py-3 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60"
         >
           {mutation.isPending ? "Running prediction..." : "Submit for inference"}
         </button>
       </form>
 
-      <section className="theme-card rounded-[1.7rem] border p-6">
-        <p className="text-xs uppercase tracking-[0.28em]" style={{ color: "var(--theme-soft)" }}>
+      <section className="theme-card border p-6">
+        <p className="text-xs uppercase" style={{ color: "var(--theme-soft)" }}>
           Inference Result
         </p>
         <h2 className="mt-2 text-2xl font-semibold" style={{ color: "var(--theme-text)" }}>
@@ -95,15 +95,15 @@ export function Predict() {
         </h2>
 
         {!mutation.data ? (
-          <div className="theme-empty mt-8 rounded-[1.4rem] border border-dashed p-6 text-sm leading-6">
+          <div className="theme-empty mt-8 rounded-lg border border-dashed p-6 text-sm leading-6">
             Run a prediction to see the eligibility status, fraud gauge, and feature contribution breakdown.
           </div>
         ) : (
           <div className="mt-8 space-y-5">
-            <div className="theme-card-soft rounded-[2rem] border p-6">
+            <div className="theme-card-soft rounded-lg border p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--theme-soft)" }}>
+                  <p className="text-xs uppercase" style={{ color: "var(--theme-soft)" }}>
                     Decision
                   </p>
                   <p
@@ -127,7 +127,7 @@ export function Predict() {
                     <span className="font-mono text-2xl" style={{ color: "var(--theme-text)" }}>
                       {riskPercent}%
                     </span>
-                    <span className="text-[10px] uppercase tracking-[0.28em]" style={{ color: "var(--theme-soft)" }}>
+                    <span className="text-[10px] uppercase" style={{ color: "var(--theme-soft)" }}>
                       Fraud
                     </span>
                   </div>
@@ -135,24 +135,24 @@ export function Predict() {
               </div>
 
               <div className="mt-6 grid gap-4 sm:grid-cols-3">
-                <div className="theme-card rounded-2xl border p-4">
-                  <p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--theme-soft)" }}>
+                <div className="theme-card rounded-lg border p-4">
+                  <p className="text-xs uppercase" style={{ color: "var(--theme-soft)" }}>
                     Confidence
                   </p>
                   <p className="mt-2 text-xl" style={{ color: "var(--theme-text)" }}>
                     {mutation.data.confidence}
                   </p>
                 </div>
-                <div className="theme-card rounded-2xl border p-4">
-                  <p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--theme-soft)" }}>
+                <div className="theme-card rounded-lg border p-4">
+                  <p className="text-xs uppercase" style={{ color: "var(--theme-soft)" }}>
                     Threshold
                   </p>
                   <p className="mt-2 text-xl" style={{ color: "var(--theme-text)" }}>
                     {mutation.data.decision_threshold.toFixed(2)}
                   </p>
                 </div>
-                <div className="theme-card rounded-2xl border p-4">
-                  <p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--theme-soft)" }}>
+                <div className="theme-card rounded-lg border p-4">
+                  <p className="text-xs uppercase" style={{ color: "var(--theme-soft)" }}>
                     Inference Time
                   </p>
                   <p className="mt-2 text-xl" style={{ color: "var(--theme-text)" }}>
@@ -162,8 +162,8 @@ export function Predict() {
               </div>
             </div>
 
-            <div className="theme-card-soft rounded-[2rem] border p-6">
-              <p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--theme-soft)" }}>
+            <div className="theme-card-soft rounded-lg border p-6">
+              <p className="text-xs uppercase" style={{ color: "var(--theme-soft)" }}>
                 Feature Breakdown
               </p>
               <div className="mt-5 space-y-4">
@@ -175,7 +175,7 @@ export function Predict() {
                           {feature.feature.replaceAll("_", " ")}
                         </p>
                         <p className="font-mono text-xs" style={{ color: "var(--theme-soft)" }}>
-                          {feature.symbol} • value {feature.value}
+                          {feature.symbol} / value {feature.value}
                         </p>
                       </div>
                       <span className="text-sm" style={{ color: "var(--theme-muted)" }}>

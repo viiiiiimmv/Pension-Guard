@@ -37,7 +37,7 @@ export function Analytics() {
     return (
       <div className="grid gap-5 lg:grid-cols-2">
         {Array.from({ length: 4 }).map((_, index) => (
-          <div key={index} className="theme-card rounded-3xl border h-44 animate-pulse" />
+          <div key={index} className="theme-card h-44 animate-pulse border" />
         ))}
       </div>
     );
@@ -50,7 +50,7 @@ export function Analytics() {
   if (!confusion || !features || !metrics) {
     return (
       <div
-        className="rounded-3xl border p-6"
+        className="rounded-lg border p-6"
         style={{
           borderColor: "var(--theme-danger-border)",
           backgroundColor: "var(--theme-danger-soft)",
@@ -65,11 +65,11 @@ export function Analytics() {
   return (
     <div className="space-y-6">
       <div className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-        <div className="theme-card rounded-[1.7rem] border p-5">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
+        <div className="theme-card border p-5">
+          <p className="text-[10px] font-semibold uppercase" style={{ color: "var(--theme-soft)" }}>
             Confusion Matrix
           </p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-[-0.02em]" style={{ color: "var(--theme-text)" }}>
+          <h2 className="mt-2 text-2xl font-semibold" style={{ color: "var(--theme-text)" }}>
             Operational fraud detection outcomes
           </h2>
           <div className="mt-6">
@@ -77,22 +77,22 @@ export function Analytics() {
           </div>
         </div>
 
-        <div className="theme-card rounded-[1.7rem] border p-5">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
+        <div className="theme-card border p-5">
+          <p className="text-[10px] font-semibold uppercase" style={{ color: "var(--theme-soft)" }}>
             Model Reports
           </p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-[-0.02em]" style={{ color: "var(--theme-text)" }}>
+          <h2 className="mt-2 text-2xl font-semibold" style={{ color: "var(--theme-text)" }}>
             ROC curve artifact
           </h2>
-          <div className="theme-card-soft mt-6 overflow-hidden rounded-3xl border p-3">
+          <div className="theme-card-soft mt-6 overflow-hidden border p-3">
             {rocCurveUrl ? (
               <img
                 src={rocCurveUrl}
                 alt="ROC Curve"
-                className="w-full rounded-2xl object-cover"
+                className="w-full rounded-lg object-cover"
               />
             ) : (
-              <div className="flex min-h-56 items-center justify-center rounded-2xl border border-dashed" style={{ borderColor: "var(--theme-border)", color: "var(--theme-muted)" }}>
+              <div className="flex min-h-56 items-center justify-center rounded-lg border border-dashed" style={{ borderColor: "var(--theme-border)", color: "var(--theme-muted)" }}>
                 ROC curve is not available.
               </div>
             )}
@@ -101,8 +101,8 @@ export function Analytics() {
       </div>
 
       <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
-        <div className="theme-card rounded-[1.7rem] border p-5">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
+        <div className="theme-card border p-5">
+          <p className="text-[10px] font-semibold uppercase" style={{ color: "var(--theme-soft)" }}>
             Feature Importance
           </p>
           <h2 className="mt-2 text-2xl font-semibold" style={{ color: "var(--theme-text)" }}>
@@ -131,21 +131,21 @@ export function Analytics() {
           </div>
         </div>
 
-        <div className="theme-card rounded-[1.7rem] border p-5">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
+        <div className="theme-card border p-5">
+          <p className="text-[10px] font-semibold uppercase" style={{ color: "var(--theme-soft)" }}>
             Benchmark Table
           </p>
           <h2 className="mt-2 text-2xl font-semibold" style={{ color: "var(--theme-text)" }}>
             Performance metrics
           </h2>
-          <div className="theme-table mt-6 overflow-hidden rounded-3xl border">
+          <div className="theme-table mt-6 overflow-hidden border">
             <table className="min-w-full">
               <thead className="theme-table-head">
                 <tr>
                   {["Model", "Acc", "Prec", "Rec", "F1", "ROC AUC"].map((heading) => (
                     <th
                       key={heading}
-                      className="px-4 py-4 text-left text-xs uppercase tracking-[0.24em]"
+                      className="px-4 py-4 text-left text-xs uppercase"
                     >
                       {heading}
                     </th>
@@ -169,8 +169,8 @@ export function Analytics() {
             </table>
           </div>
 
-          <div className="theme-card-soft mt-5 rounded-3xl border p-4">
-            <p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--theme-soft)" }}>
+          <div className="theme-card-soft mt-5 border p-4">
+            <p className="text-xs uppercase" style={{ color: "var(--theme-soft)" }}>
               Latency Benchmark
             </p>
             <p className="mt-2 text-xl" style={{ color: "var(--theme-text)" }}>

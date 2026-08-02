@@ -25,13 +25,13 @@ export function ModelComparison({ rows }: ModelComparisonProps) {
   }));
 
   return (
-    <div className="theme-card rounded-[1.7rem] border p-5">
+    <div className="theme-card border p-5">
       <div className="mb-4 flex items-start justify-between gap-3">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
+          <p className="text-[10px] font-semibold uppercase" style={{ color: "var(--theme-soft)" }}>
             Model Comparison
           </p>
-          <h3 className="mt-2 text-xl font-semibold tracking-[-0.02em]" style={{ color: "var(--theme-text)" }}>
+          <h3 className="mt-2 text-xl font-semibold" style={{ color: "var(--theme-text)" }}>
             Benchmarking model performance
           </h3>
         </div>

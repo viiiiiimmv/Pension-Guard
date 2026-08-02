@@ -44,13 +44,13 @@ export function Pensioners() {
   return (
     <div className="grid gap-6 xl:h-[calc(100dvh-17rem)] xl:grid-cols-[minmax(0,1.45fr)_minmax(320px,0.7fr)] xl:overflow-hidden">
       <div className="flex min-h-0 flex-col gap-5">
-        <div className="theme-card rounded-[1.7rem] border p-5">
+        <div className="theme-card border p-5">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
+              <p className="text-[10px] font-semibold uppercase" style={{ color: "var(--theme-soft)" }}>
                 Review Queue
               </p>
-              <h2 className="mt-2 text-2xl font-semibold tracking-[-0.02em]" style={{ color: "var(--theme-text)" }}>
+              <h2 className="mt-2 text-2xl font-semibold" style={{ color: "var(--theme-text)" }}>
                 Searchable pensioner table
               </h2>
             </div>
@@ -64,7 +64,7 @@ export function Pensioners() {
                   })
                 }
                 placeholder="Search by pensioner ID"
-                className="theme-input rounded-2xl border px-4 py-3 text-sm outline-none"
+                className="theme-input rounded-lg border px-4 py-3 text-sm outline-none"
               />
               <select
                 value={filterBy}
@@ -72,7 +72,7 @@ export function Pensioners() {
                   setFilterBy(event.target.value as StatusFilter);
                   setPage(1);
                 }}
-                className="theme-input rounded-2xl border px-4 py-3 text-sm outline-none"
+                className="theme-input rounded-lg border px-4 py-3 text-sm outline-none"
               >
                 <option value="all">All</option>
                 <option value="eligible">Eligible</option>
@@ -85,7 +85,7 @@ export function Pensioners() {
 
         <div className="min-h-0 flex-1">
           {emptyState ? (
-            <div className="theme-empty flex h-full items-center rounded-[1.7rem] border p-8">
+            <div className="theme-empty flex h-full items-center rounded-lg border p-8">
               No pensioners matched the current search and filter combination.
             </div>
           ) : (
@@ -106,7 +106,7 @@ export function Pensioners() {
           )}
         </div>
 
-        <div className="theme-card flex items-center justify-between rounded-[1.5rem] border px-5 py-4">
+        <div className="theme-card flex items-center justify-between rounded-lg border px-5 py-4">
           <p className="text-sm" style={{ color: "var(--theme-muted)" }}>
             {pagination ? `Page ${pagination.page} of ${pagination.total_pages}` : "Loading pagination..."}
           </p>
@@ -115,7 +115,7 @@ export function Pensioners() {
               type="button"
               disabled={!pagination || pagination.page <= 1}
               onClick={() => setPage((current) => Math.max(1, current - 1))}
-              className="theme-outline-btn rounded-2xl border px-4 py-2 text-sm transition disabled:cursor-not-allowed disabled:opacity-40"
+              className="theme-outline-btn rounded-lg border px-4 py-2 text-sm transition disabled:cursor-not-allowed disabled:opacity-40"
             >
               Previous
             </button>
@@ -123,7 +123,7 @@ export function Pensioners() {
               type="button"
               disabled={!pagination || pagination.page >= pagination.total_pages}
               onClick={() => setPage((current) => current + 1)}
-              className="theme-outline-btn rounded-2xl border px-4 py-2 text-sm transition disabled:cursor-not-allowed disabled:opacity-40"
+              className="theme-outline-btn rounded-lg border px-4 py-2 text-sm transition disabled:cursor-not-allowed disabled:opacity-40"
             >
               Next
             </button>
@@ -131,21 +131,21 @@ export function Pensioners() {
         </div>
       </div>
 
-      <aside className="theme-card rounded-[1.7rem] border p-5 xl:min-h-0 xl:overflow-y-auto xl:overscroll-contain">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.3em]" style={{ color: "var(--theme-soft)" }}>
+      <aside className="theme-card rounded-lg border p-5 xl:min-h-0 xl:overflow-y-auto xl:overscroll-contain">
+        <p className="text-[10px] font-semibold uppercase" style={{ color: "var(--theme-soft)" }}>
           Record Detail
         </p>
-        <h2 className="mt-2 text-2xl font-semibold tracking-[-0.02em]" style={{ color: "var(--theme-text)" }}>
+        <h2 className="mt-2 text-2xl font-semibold" style={{ color: "var(--theme-text)" }}>
           Inference side panel
         </h2>
 
         {!selectedRecord ? (
-          <div className="theme-empty mt-8 rounded-[1.4rem] border border-dashed p-6 text-sm">
+          <div className="theme-empty mt-8 rounded-lg border border-dashed p-6 text-sm">
             Click any row to inspect the full pensioner record and its inference output.
           </div>
         ) : (
           <div className="mt-6 space-y-5">
-            <div className="theme-card-soft rounded-3xl border p-5">
+            <div className="theme-card-soft rounded-lg border p-5">
               <div className="flex items-center justify-between">
                 <p className="font-mono text-lg" style={{ color: "var(--theme-text)" }}>
                   {selectedRecord.pensioner_id}
@@ -153,17 +153,17 @@ export function Pensioners() {
                 <EligibilityBadge value={selectedRecord.predicted_label} />
               </div>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <div><p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--theme-soft)" }}>Age</p><p className="mt-1" style={{ color: "var(--theme-text)" }}>{selectedRecord.age.toFixed(0)}</p></div>
-                <div><p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--theme-soft)" }}>Delay</p><p className="mt-1" style={{ color: "var(--theme-text)" }}>{selectedRecord.life_proof_delay.toFixed(1)} days</p></div>
-                <div><p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--theme-soft)" }}>Bank Activity</p><p className="mt-1" style={{ color: "var(--theme-text)" }}>{selectedRecord.bank_activity_count}</p></div>
-                <div><p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--theme-soft)" }}>Approval Rate</p><p className="mt-1" style={{ color: "var(--theme-text)" }}>{(selectedRecord.historical_approval_rate * 100).toFixed(1)}%</p></div>
-                <div><p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--theme-soft)" }}>Biometric</p><p className="mt-1" style={{ color: "var(--theme-text)" }}>{selectedRecord.biometric_status}</p></div>
-                <div><p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--theme-soft)" }}>Credit Anomaly</p><p className="mt-1" style={{ color: "var(--theme-text)" }}>{selectedRecord.pension_credit_anomaly}</p></div>
+                <div><p className="text-xs uppercase" style={{ color: "var(--theme-soft)" }}>Age</p><p className="mt-1" style={{ color: "var(--theme-text)" }}>{selectedRecord.age.toFixed(0)}</p></div>
+                <div><p className="text-xs uppercase" style={{ color: "var(--theme-soft)" }}>Delay</p><p className="mt-1" style={{ color: "var(--theme-text)" }}>{selectedRecord.life_proof_delay.toFixed(1)} days</p></div>
+                <div><p className="text-xs uppercase" style={{ color: "var(--theme-soft)" }}>Bank Activity</p><p className="mt-1" style={{ color: "var(--theme-text)" }}>{selectedRecord.bank_activity_count}</p></div>
+                <div><p className="text-xs uppercase" style={{ color: "var(--theme-soft)" }}>Approval Rate</p><p className="mt-1" style={{ color: "var(--theme-text)" }}>{(selectedRecord.historical_approval_rate * 100).toFixed(1)}%</p></div>
+                <div><p className="text-xs uppercase" style={{ color: "var(--theme-soft)" }}>Biometric</p><p className="mt-1" style={{ color: "var(--theme-text)" }}>{selectedRecord.biometric_status}</p></div>
+                <div><p className="text-xs uppercase" style={{ color: "var(--theme-soft)" }}>Credit Anomaly</p><p className="mt-1" style={{ color: "var(--theme-text)" }}>{selectedRecord.pension_credit_anomaly}</p></div>
               </div>
             </div>
 
-            <div className="theme-card-soft rounded-3xl border p-5">
-              <p className="text-xs uppercase tracking-[0.2em]" style={{ color: "var(--theme-soft)" }}>
+            <div className="theme-card-soft rounded-lg border p-5">
+              <p className="text-xs uppercase" style={{ color: "var(--theme-soft)" }}>
                 Inference Snapshot
               </p>
               <div className="mt-4 grid gap-4">
